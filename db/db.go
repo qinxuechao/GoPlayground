@@ -11,6 +11,7 @@ import (
 func Init(params *model.MysqlParams) *sql.DB {
 	dbPath := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", params.User, params.Password, params.Host,
 		params.Port, params.Database)
+	fmt.Printf(dbPath)
 	log.Infof("connecting to mysql db: %s:%s", params.Host, params.Port)
 	db, err := sql.Open("mysql", dbPath)
 

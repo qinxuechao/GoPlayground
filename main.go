@@ -5,6 +5,7 @@ import (
 	"GoPlayground/lib/log"
 	"GoPlayground/model"
 	"flag"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	logger "github.com/sirupsen/logrus"
 )
@@ -15,7 +16,7 @@ func initArgs() *model.MysqlParams {
 	Params.Port = *flag.String("p", "3306", "mysql port, default is 3306")
 	Params.User = *flag.String("u", "root", "username, default is root")
 	Params.Password = *flag.String("P", "password", "password, default is password")
-	Params.Password = *flag.String("db", "test", "database, default is test database")
+	Params.Database = *flag.String("db", "test", "database, default is test database")
 
 	flag.Parse()
 
@@ -29,13 +30,16 @@ func main() {
 	params := initArgs()
 	conn := db.Init(params)
 
-
 	defer conn.Close()
 
-	insert, err := conn.Query("INSERT INTO test.user VALUES ( 1, 'xiaoming', 'r&d', 'engineer')")
+	rows, err := conn.Query("select * from user")
 	if err != nil {
 		logger.Errorf(err.Error())
 	}
 
-	defer insert.Close()
+	var res model.User
+	for rows.Next() {
+		err = rows.Scan(&res.Id, &res.Name, &res.Department, &res.Role)
+		fmt.Println(res)
+	}
 }
