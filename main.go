@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/pkg/errors"
 	logger "github.com/sirupsen/logrus"
 )
 
@@ -41,5 +42,17 @@ func main() {
 	for rows.Next() {
 		err = rows.Scan(&res.Id, &res.Name, &res.Department, &res.Role)
 		fmt.Println(res)
+	}
+
+	querySql := "select * from user where id = 2"
+
+	err = conn.QueryRow(querySql).Scan(&res.Id, &res.Name, &res.Department, &res.Role)
+	if err != nil {
+		// 如果是封装的方法直接返回
+		// return errors.Wrapf(err,"execute querySql err: %s", querySql)
+
+		// 主方法中直接打印忽略
+		error := errors.Wrapf(err,"execute querySql err: %s", querySql)
+		logger.Errorf("%+v\n", error)
 	}
 }

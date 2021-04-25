@@ -4,7 +4,6 @@ import (
 	"GoPlayground/model"
 	"database/sql"
 	"fmt"
-
 	log "github.com/sirupsen/logrus"
 )
 
