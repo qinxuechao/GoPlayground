@@ -3,13 +3,11 @@ package main
 import (
 	"GoPlayground/lib/log"
 	"context"
-	"fmt"
-	_ "github.com/go-sql-driver/mysql"
+    "github.com/go-redis/redis/v8"
 	logger "github.com/sirupsen/logrus"
 	)
 
 var ctx = context.Background()
-
 
 func main() {
 	log.Init()
@@ -20,8 +18,9 @@ func main() {
 		DB:       0,  // use default DB
 	})
 
-	err := rdb.Ping(ctx, "key", "value", 0).Err()
+	err := rdb.Set(ctx, "a", "1", 0).Err()
 	if err != nil {
 		panic(err)
 	}
+
 }
