@@ -8,6 +8,11 @@ type MysqlParams struct {
 	Database string // Database to use
 }
 
+type HTTPServerParams struct {
+	Host string
+	Port string
+}
+
 type User struct {
 	Id         int    `json:"id"`
 	Name       string `json:"name"`
